@@ -3,7 +3,7 @@ from selenium import webdriver
 
 CSV_NAME = input('What is the name of the .CSV file to be imported (only the name, without the .csv extension)? ')
 
-CSV_DF = pd.read_csv(CSV_NAME + '.csv')
+CSV_DF = pd.read_csv(CSV_NAME + '.csv', dtype='str')
 
 FILE = 'last_UG_data.txt'
 
@@ -43,18 +43,18 @@ def ask_for_data():
 
 def ask_for_prices():
     prices = {
-        1 : round(float(input('Enter the price to be charged to the residents of the first village: ')), 2),
-        2 : round(float(input('Enter the price to be charged to the residents of the second village: ')), 2),
-        3 : round(float(input('Enter the price to be charged to the residents of the third village: ')), 2),
+        '1' : round(float(input('Enter the price to be charged to the residents of the first village: ')), 2),
+        '2' : round(float(input('Enter the price to be charged to the residents of the second village: ')), 2),
+        '3' : round(float(input('Enter the price to be charged to the residents of the third village: ')), 2),
         'm_date' : input('Enter the the maturity date for all the invoices (DDMMAAA): ')
         }
 
     return prices
 
 def send_request(i, mil_data, prices, ug_data, log_name):
-    url = 'https://valpagtesouro.tesouro.gov.br/api/gru/solicitacao-pagamento'
+    url = 'https://pagtesouro.tesouro.gov.br/api/gru/solicitacao-pagamento'
     headers = {
-        'Authorization' : 'Bearer + ' ' + ug_data['token'],
+        'Authorization' : 'Bearer' + ' ' + ug_data['token'],
         'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0',
         'Accept' : 'application/json, text/plain, */*',
         'Accept-Language' : 'pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3',
@@ -64,8 +64,8 @@ def send_request(i, mil_data, prices, ug_data, log_name):
         'Connection' : 'keep-alive'
         }
 
-    cpf, name = str(mil_data['CPF']), mil_data['Name']
-    price = str(prices[mil_data['Village']])
+    cpf, name = mil_data['CPF'], mil_data['Name']
+    price = prices[mil_data['Village']]
     data = {
         'codigoServico' : ug_data['s_code'],
         'vencimento' : prices['m_date'],
