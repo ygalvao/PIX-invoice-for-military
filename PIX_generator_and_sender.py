@@ -100,9 +100,6 @@ def send_request(i, mil_data, prices, ug_data, log_name):
 
 def work_response(response, iteration):
     print(response['proximaUrl'])
-    #time.sleep(3)
-    #driver = webdriver.Firefox()
-    #driver = webdriver.Firefox(PROFILE)
     driver = webdriver.Chrome(options = OPTIONS)
     driver.get(response['proximaUrl'])
     time.sleep(1)
@@ -111,16 +108,16 @@ def work_response(response, iteration):
     pay_box = driver.find_element_by_id('btnPgto')
     pay_box.click()
     time.sleep(.5)
-    
+
     pdf = driver.execute_cdp_cmd("Page.printToPDF", {"printBackground": True})
     with open('PDF/PIX' + str(iteration) + '.pdf', 'wb') as f:
         f.write(base64.b64decode(pdf['data']))
-        
+
     driver.quit()
 
 def send_pdf(iteration, email):
     
-            
+
 def start():
     if check_csv():
         if check_file() and confirm('Do you want to use the last used UG data? '):
