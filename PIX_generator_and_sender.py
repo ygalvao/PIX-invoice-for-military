@@ -1,5 +1,6 @@
-import pandas as pd, requests as req, os, json, time
+import pandas as pd, requests as req, base64, os, json, time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 CSV_NAME = input('What is the name of the .CSV file to be imported (only the name, without the .csv extension)? ')
 
@@ -7,7 +8,8 @@ CSV_DF = pd.read_csv(CSV_NAME + '.csv', dtype='str')
 
 FILE = 'last_UG_data.txt'
 
-#DRIVER = webdriver.Firefox()
+OPTIONS = Options()
+OPTIONS.add_argument('--headless')
 
 def program_end():
     print('\nEnd of the program.')
@@ -96,10 +98,28 @@ def send_request(i, mil_data, prices, ug_data, log_name):
 
     return request
 
-def work_response(response):
-    #DRIVER.get(response['proximaUrl'])
+def work_response(response, iteration):
     print(response['proximaUrl'])
-    time.sleep(5)
+    #time.sleep(3)
+    #driver = webdriver.Firefox()
+    #driver = webdriver.Firefox(PROFILE)
+    driver = webdriver.Chrome(options = OPTIONS)
+    driver.get(response['proximaUrl'])
+    time.sleep(1)
+    pix_box = driver.find_element_by_class_name('img-icone-pix')
+    pix_box.click()
+    pay_box = driver.find_element_by_id('btnPgto')
+    pay_box.click()
+    time.sleep(.5)
+    
+    pdf = driver.execute_cdp_cmd("Page.printToPDF", {"printBackground": True})
+    with open('PDF/PIX' + str(iteration) + '.pdf', 'wb') as f:
+        f.write(base64.b64decode(pdf['data']))
+        
+    driver.quit()
+
+def send_pdf(iteration, email):
+    
             
 def start():
     if check_csv():
@@ -119,7 +139,8 @@ def start():
             response = json.loads(request.text)
 
             if request.ok:
-                work_response(response)
+                work_response(response, i)
+                send_pdf(i, CSV_DF.loc[i]['Email'])
 
             else:
                 for i in response:
