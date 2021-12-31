@@ -1,15 +1,17 @@
-import email, smtplib, ssl
+#!/usr/bin/env python3
+
+import email, smtplib, ssl, base64
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 smtp_data = {
-    'server' : 'smtp.gmail.com',
+    'server' : 'smtp.mailprovider.com',
     'port' : '587',
-    'sender' : 'yhgalvao@gmail.com',
-    'password' : 'mlsqlrnfdkoyglzy',
-    'receiver' : 'yuri@yurigalvao.com.br'
+    'sender' : 'johndoe@gmail.com',
+    'password' : 'yourpassword',
+    'receiver' : 'john@doe.com'
     }
 
 def send_email(iteration, smtp_data):
@@ -19,23 +21,27 @@ def send_email(iteration, smtp_data):
     receiver_email = smtp_data['receiver']
     password = smtp_data['password']
 
-    subject = "An email with attachment from Python"
-    body = "This is an email with attachment sent from Python"
+    subject = "PIX for payment"
+    body = '''Hello!
+
+The file with the PIX code for payment is attached to this email.
+
+This in an automated email.'''
 
     # Create a multipart message and set headers
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = receiver_email
     message["Subject"] = subject
-    message["Bcc"] = receiver_email  # Recommended for mass emails
+    #message["Bcc"] = receiver_email  # Recommended for mass emails
 
     # Add body to email
     message.attach(MIMEText(body, "plain"))
 
-    filename = "document.pdf"  # In same directory as script
+    filename = 'PIX' + str(iteration) + '.pdf'  # In same directory as script
 
     # Open PDF file in binary mode
-    with open(filename, "rb") as attachment:
+    with open('PDF/' + filename, "rb") as attachment:
         # Add file as application/octet-stream
         # Email client can usually download this automatically as attachment
         part = MIMEBase("application", "octet-stream")
@@ -59,16 +65,13 @@ def send_email(iteration, smtp_data):
 
     # Try to log in to server and send email
     try:
-        message = '''Subject: Test!!
-This is a test! ;D'''
-        
         with smtplib.SMTP(smtp_server, port) as server:
 ##            server.connect(smtp_server, port)
             server.ehlo()
             server.starttls(context=context)
             server.ehlo()
             server.login(sender_email, password)
-            server.sendmail(sender_email, receiver_email, message)
+            server.sendmail(sender_email, receiver_email, text)
         
     except Exception as e:
         # Print any error messages to stdout

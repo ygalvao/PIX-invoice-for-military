@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+
 import pandas as pd, requests as req, base64, os, json, time, email, smtplib
+from email_sender import send_email
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -7,6 +10,7 @@ CSV_NAME = input('What is the name of the .CSV file to be imported (only the nam
 CSV_DF = pd.read_csv(CSV_NAME + '.csv', dtype='str')
 
 FILE = 'last_UG_data.txt'
+SMTP_FILE = 'last_SMTP_data.txt'
 
 OPTIONS = Options()
 OPTIONS.add_argument('--headless')
@@ -29,7 +33,7 @@ def check_csv():
         return True
 
 def check_file(file = FILE):
-    if os.path.isfile('./' + FILE):
+    if os.path.isfile('./' + file):
         return True
 
 def ask_for_data():
@@ -61,6 +65,8 @@ def ask_for_smtp_data():
         'password' : input('Enter your email password: '),
         'receiver' : ''
         }
+
+    open(SMTP_FILE, 'w').write(json.dumps(smtp_data))
 
     return smtp_data
 
@@ -122,23 +128,6 @@ def work_response(driver, response, iteration):
     with open('PDF/PIX' + str(iteration) + '.pdf', 'wb') as f:
         f.write(base64.b64decode(pdf['data']))
 
-def send_email(iteration, smtp_data):
-    smtp_server = smtp_data['server']
-    sender_email = smtp_data['sender']
-    password = smtp_data['password']
-
-    # Try to log in to server and send email
-    try:
-        server = smtplib.SMTP(smtp_server)
-        server.ehlo()
-        server.login(sender_email, password)
-        # TODO: Send email here
-    except Exception as e:
-        # Print any error messages to stdout
-        print(e)
-    finally:
-        server.quit() 
-
 def start():
     if check_csv():
         if check_file() and confirm('Do you want to use the last used UG data? '):
@@ -146,13 +135,16 @@ def start():
         else:
             ug_data = ask_for_data()
 
+        if check_file(SMTP_FILE) and confirm('Do you want to use the last used SMTP data? '):
+            smtp_data = json.loads(open(SMTP_FILE, 'r').read())
+        else:
+            smtp_data = ask_for_smtp_data()
+
         prices = ask_for_prices()
 
         log_time = str(int(time.time()))
         log_name = log_time + '_log.txt'
         driver = webdriver.Chrome(options = OPTIONS)
-
-        smtp_data = ask_for_smtp_data()
 
         for i in CSV_DF.index:
             write_file = open(log_name, 'a')
