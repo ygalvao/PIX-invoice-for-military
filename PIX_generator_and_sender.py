@@ -98,9 +98,7 @@ def send_request(i, mil_data, prices, ug_data, log_name):
 
     return request
 
-def work_response(response, iteration):
-    print(response['proximaUrl'])
-    driver = webdriver.Chrome(options = OPTIONS)
+def work_response(driver, response, iteration):
     driver.get(response['proximaUrl'])
     time.sleep(1)
     pix_box = driver.find_element_by_class_name('img-icone-pix')
@@ -113,10 +111,8 @@ def work_response(response, iteration):
     with open('PDF/PIX' + str(iteration) + '.pdf', 'wb') as f:
         f.write(base64.b64decode(pdf['data']))
 
-    driver.quit()
+#def send_pdf(iteration, email):
 
-def send_pdf(iteration, email):
-    
 
 def start():
     if check_csv():
@@ -129,6 +125,7 @@ def start():
 
         log_time = str(int(time.time()))
         log_name = log_time + '_log.txt'
+        driver = webdriver.Chrome(options = OPTIONS)
 
         for i in CSV_DF.index:
             write_file = open(log_name, 'a')
@@ -136,8 +133,8 @@ def start():
             response = json.loads(request.text)
 
             if request.ok:
-                work_response(response, i)
-                send_pdf(i, CSV_DF.loc[i]['Email'])
+                work_response(driver, response, i)
+##                send_pdf(i, CSV_DF.loc[i]['Email'])
 
             else:
                 for i in response:
@@ -145,6 +142,8 @@ def start():
                         print(item[0], ': ', item[1], sep='')
             
             write_file.close()
+
+        driver.quit()
         
 if __name__ == '__main__':
     start()          
