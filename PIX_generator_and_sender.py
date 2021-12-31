@@ -1,4 +1,4 @@
-import pandas as pd, requests as req, base64, os, json, time
+import pandas as pd, requests as req, base64, os, json, time, email, smtplib
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -52,6 +52,17 @@ def ask_for_prices():
         }
 
     return prices
+
+def ask_for_smtp_data():
+    smtp_data = {
+        'server' : input('Enter the SMTP server address: '),
+        'port' : input('Enter the SSL/TLS port for authentication: '),
+        'sender' : input('Enter the sender email address: '),
+        'password' : input('Enter your email password: '),
+        'receiver' : ''
+        }
+
+    return smtp_data
 
 def send_request(i, mil_data, prices, ug_data, log_name):
     url = 'https://pagtesouro.tesouro.gov.br/api/gru/solicitacao-pagamento'
@@ -111,8 +122,22 @@ def work_response(driver, response, iteration):
     with open('PDF/PIX' + str(iteration) + '.pdf', 'wb') as f:
         f.write(base64.b64decode(pdf['data']))
 
-#def send_pdf(iteration, email):
+def send_email(iteration, smtp_data):
+    smtp_server = smtp_data['server']
+    sender_email = smtp_data['sender']
+    password = smtp_data['password']
 
+    # Try to log in to server and send email
+    try:
+        server = smtplib.SMTP(smtp_server)
+        server.ehlo()
+        server.login(sender_email, password)
+        # TODO: Send email here
+    except Exception as e:
+        # Print any error messages to stdout
+        print(e)
+    finally:
+        server.quit() 
 
 def start():
     if check_csv():
@@ -127,6 +152,8 @@ def start():
         log_name = log_time + '_log.txt'
         driver = webdriver.Chrome(options = OPTIONS)
 
+        smtp_data = ask_for_smtp_data()
+
         for i in CSV_DF.index:
             write_file = open(log_name, 'a')
             request = send_request(i, CSV_DF.loc[i], prices, ug_data, write_file)
@@ -134,7 +161,8 @@ def start():
 
             if request.ok:
                 work_response(driver, response, i)
-##                send_pdf(i, CSV_DF.loc[i]['Email'])
+                smtp_data['receiver'] = CSV_DF.loc[i]['Email']
+                send_email(i, smtp_data)
 
             else:
                 for i in response:
@@ -144,6 +172,10 @@ def start():
             write_file.close()
 
         driver.quit()
+
+    else:
+        print('''The CSV file wasn't found!''')
+        start()
         
 if __name__ == '__main__':
     start()          
