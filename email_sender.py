@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import email, smtplib, ssl, base64
+import email, smtplib, ssl, gettext
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+_ = gettext.gettext
 
 smtp_data = {
     'server' : 'smtp.mailprovider.com',
@@ -21,12 +23,12 @@ def send_email(iteration, smtp_data):
     receiver_email = smtp_data['receiver']
     password = smtp_data['password']
 
-    subject = "PIX for payment"
-    body = '''Hello!
+    subject = _("PIX for payment")
+    body = _('''Hello!
 
 The file with the PIX code for payment is attached to this email.
 
-This in an automated email.'''
+This in an automated email.''')
 
     # Create a multipart message and set headers
     message = MIMEMultipart()

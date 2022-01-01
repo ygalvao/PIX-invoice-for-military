@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 
-import pandas as pd, requests as req, base64, os, json, time, email, smtplib
+import pandas as pd, requests as req, base64, os, json, time, gettext
 from email_sender import send_email
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-CSV_NAME = input('What is the name of the .CSV file to be imported (only the name, without the .csv extension)? ')
+_ = gettext.gettext
+
+CSV_NAME = input(_('What is the name of the .CSV file to be imported (only the name, without the .csv extension)? '))
 
 CSV_DF = pd.read_csv(CSV_NAME + '.csv', dtype='str')
 
-FILE = 'last_UG_data.txt'
-SMTP_FILE = 'last_SMTP_data.txt'
+FILE = _('last_UG_data.txt')
+SMTP_FILE = _('last_SMTP_data.txt')
 
 OPTIONS = Options()
 OPTIONS.add_argument('--headless')
 
 def program_end():
-    print('\nEnd of the program.')
+    print(_('\nEnd of the program.'))
     time.sleep(5)
 
 def confirm(text):
@@ -38,9 +40,9 @@ def check_file(file = FILE):
 
 def ask_for_data():
     data = {
-        'ug' : input('Enter the UG code: '),
-        'token' : input('Enter the PagTesouro token to the previous UG code: '),
-        's_code' : input('Enter the service code: ')
+        'ug' : input(_('Enter the UG code: ')),
+        'token' : input(_('Enter the PagTesouro token to the previous UG code: ')),
+        's_code' : input(_('Enter the service code: '))
         }
 
     open(FILE, 'w').write(json.dumps(data))
@@ -49,20 +51,20 @@ def ask_for_data():
 
 def ask_for_prices():
     prices = {
-        '1' : round(float(input('Enter the price to be charged to the residents of the first village: ')), 2),
-        '2' : round(float(input('Enter the price to be charged to the residents of the second village: ')), 2),
-        '3' : round(float(input('Enter the price to be charged to the residents of the third village: ')), 2),
-        'm_date' : input('Enter the the maturity date for all the invoices (DDMMAAA): ')
+        '1' : round(float(input(_('Enter the price to be charged to the residents of the first village: '))), 2),
+        '2' : round(float(input(_('Enter the price to be charged to the residents of the second village: '))), 2),
+        '3' : round(float(input(_('Enter the price to be charged to the residents of the third village: '))), 2),
+        'm_date' : input(_('Enter the the maturity date for all the invoices (DDMMAAA): '))
         }
 
     return prices
 
 def ask_for_smtp_data():
     smtp_data = {
-        'server' : input('Enter the SMTP server address: '),
-        'port' : input('Enter the SSL/TLS port for authentication: '),
-        'sender' : input('Enter the sender email address: '),
-        'password' : input('Enter your email password: '),
+        'server' : input(_('Enter the SMTP server address: ')),
+        'port' : input(_('Enter the SSL/TLS port for authentication: ')),
+        'sender' : input(_('Enter the sender email address: ')),
+        'password' : input(_('Enter your email password: ')),
         'receiver' : ''
         }
 
@@ -95,8 +97,8 @@ def send_request(i, mil_data, prices, ug_data, log_name):
 
     request = req.post(url, data = json.dumps(data), headers = headers)
 
-    ok_msg = 'Request ' + str(i) + ' was successfully sent!'
-    error_msg = 'Request ' + str(i) + ' has returned this status: ' + str(request.status_code)
+    ok_msg = _('Request ') + str(i) + _(' was successfully sent!')
+    error_msg = _('Request ') + str(i) + _(' has returned this status: ') + str(request.status_code)
 
     if request.ok:
         print(ok_msg)
@@ -130,12 +132,12 @@ def work_response(driver, response, iteration):
 
 def start():
     if check_csv():
-        if check_file() and confirm('Do you want to use the last used UG data? '):
+        if check_file() and confirm(_('Do you want to use the last used UG data? ')):
             ug_data = json.loads(open(FILE, 'r').read())
         else:
             ug_data = ask_for_data()
 
-        if check_file(SMTP_FILE) and confirm('Do you want to use the last used SMTP data? '):
+        if check_file(SMTP_FILE) and confirm(_('Do you want to use the last used SMTP data? ')):
             smtp_data = json.loads(open(SMTP_FILE, 'r').read())
         else:
             smtp_data = ask_for_smtp_data()
@@ -147,7 +149,7 @@ def start():
         driver = webdriver.Chrome(options = OPTIONS)
 
         for i in CSV_DF.index:
-            write_file = open(log_name, 'a')
+            write_file = open('logs/' + log_name, 'a')
             request = send_request(i, CSV_DF.loc[i], prices, ug_data, write_file)
             response = json.loads(request.text)
 
@@ -166,7 +168,7 @@ def start():
         driver.quit()
 
     else:
-        print('''The CSV file wasn't found!''')
+        print(_('''The CSV file wasn't found!'''))
         start()
         
 if __name__ == '__main__':
