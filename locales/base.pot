@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2022-01-01 21:47-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=cp1252\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: PIX_generator_and_sender.py:10
+msgid "What is the name of the .CSV file to be imported (only the name, without the .csv extension)? "
+msgstr ""
+
+#: PIX_generator_and_sender.py:14
+msgid "last_UG_data.txt"
+msgstr ""
+
+#: PIX_generator_and_sender.py:15
+msgid "last_SMTP_data.txt"
+msgstr ""
+
+#: PIX_generator_and_sender.py:21
+msgid ""
+"\n"
+"End of the program."
+msgstr ""
+
+#: PIX_generator_and_sender.py:43
+msgid "Enter the UG code: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:44
+msgid "Enter the PagTesouro token to the previous UG code: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:45
+msgid "Enter the service code: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:54
+msgid "Enter the price to be charged to the residents of the first village: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:55
+msgid "Enter the price to be charged to the residents of the second village: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:56
+msgid "Enter the price to be charged to the residents of the third village: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:57
+msgid "Enter the the maturity date for all the invoices (DDMMYYYY): "
+msgstr ""
+
+#: PIX_generator_and_sender.py:64
+msgid "Enter the SMTP server address: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:65
+msgid "Enter the SSL/TLS port for authentication: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:66
+msgid "Enter the sender email address: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:67
+msgid "Enter your email password: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:100
+msgid " was successfully sent!"
+msgstr ""
+
+#: PIX_generator_and_sender.py:100 PIX_generator_and_sender.py:101
+msgid "Request "
+msgstr ""
+
+#: PIX_generator_and_sender.py:101
+msgid " has returned this status: "
+msgstr ""
+
+#: PIX_generator_and_sender.py:135
+msgid "Do you want to use the last used UG data? "
+msgstr ""
+
+#: PIX_generator_and_sender.py:140
+msgid "Do you want to use the last used SMTP data? "
+msgstr ""
+
+#: PIX_generator_and_sender.py:171
+msgid "The CSV file wasn't found!"
+msgstr ""
+

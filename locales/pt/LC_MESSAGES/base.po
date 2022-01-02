@@ -1,0 +1,105 @@
+# PIX Generator - Emissor de PIX - versão em Português do Brasil.
+# Copyright (C) 2022
+# Yuri Henrique Galvão <yuri@yurigalvao.com.br>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.2a\n"
+"POT-Creation-Date: 2022-01-01 21:47-0300\n"
+"PO-Revision-Date: 2022-01-01 22:17-0300\n"
+"Last-Translator: Yuri Henrique Galvão <yuri@yurigalvao.com.br>\n"
+"Language-Team: Portuguese <LL@li.org>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: PIX_generator_and_sender.py:10
+msgid "What is the name of the .CSV file to be imported (only the name, without the .csv extension)? "
+msgstr "Qual é o nome do arquivo .CSV a ser importado (digite apenas o nome, sem a extensão .csv)? "
+
+#: PIX_generator_and_sender.py:14
+msgid "last_UG_data.txt"
+msgstr "ultimos_dados_da_UG.txt"
+
+#: PIX_generator_and_sender.py:15
+msgid "last_SMTP_data.txt"
+msgstr "ultimos_dados_SMTP.txt"
+
+#: PIX_generator_and_sender.py:21
+msgid ""
+"\n"
+"End of the program."
+msgstr ""
+"\n"
+"Fim do programa."
+
+#: PIX_generator_and_sender.py:43
+msgid "Enter the UG code: "
+msgstr "Digite o código de UG: "
+
+#: PIX_generator_and_sender.py:44
+msgid "Enter the PagTesouro token to the previous UG code: "
+msgstr "Digite o token do PagTesouro referente à UG: "
+
+#: PIX_generator_and_sender.py:45
+msgid "Enter the service code: "
+msgstr "Digite o código de serviço: "
+
+#: PIX_generator_and_sender.py:54
+msgid "Enter the price to be charged to the residents of the first village: "
+msgstr "Digite o preço a ser cobrado dos residentes da primeira vila: "
+
+#: PIX_generator_and_sender.py:55
+msgid "Enter the price to be charged to the residents of the second village: "
+msgstr "Digite o preço a ser cobrado dos residentes da segunda vila: "
+
+#: PIX_generator_and_sender.py:56
+msgid "Enter the price to be charged to the residents of the third village: "
+msgstr "Digite o preço a ser cobrado dos residentes da terceira vila: "
+
+#: PIX_generator_and_sender.py:57
+msgid "Enter the the maturity date for all the invoices (DDMMYYYY): "
+msgstr "Digite a data de vencimento para todos os documentos a serem gerados (DDMMAAAA): "
+
+#: PIX_generator_and_sender.py:64
+msgid "Enter the SMTP server address: "
+msgstr "Digite o endereço do servidor SMTP: "
+
+#: PIX_generator_and_sender.py:65
+msgid "Enter the SSL/TLS port for authentication: "
+msgstr "Digite a porta para autenticação SSL/TLS: "
+
+#: PIX_generator_and_sender.py:66
+msgid "Enter the sender email address: "
+msgstr "Digite o endereço de email remetente: "
+
+#: PIX_generator_and_sender.py:67
+msgid "Enter your email password: "
+msgstr "Digite a senha do endereço de email: "
+
+#: PIX_generator_and_sender.py:100
+msgid " was successfully sent!"
+msgstr " foi enviado(a) com sucesso!"
+
+#: PIX_generator_and_sender.py:100 PIX_generator_and_sender.py:101
+msgid "Request "
+msgstr "Requisição "
+
+#: PIX_generator_and_sender.py:101
+msgid " has returned this status: "
+msgstr " retornou o seguinte status: "
+
+#: PIX_generator_and_sender.py:135
+msgid "Do you want to use the last used UG data? "
+msgstr "Você quer utilizar novamente os últimos dados de UG? "
+
+#: PIX_generator_and_sender.py:140
+msgid "Do you want to use the last used SMTP data? "
+msgstr "Você quer utilizar novamente os últimos dados de SMTP? "
+
+#: PIX_generator_and_sender.py:171
+msgid "The CSV file wasn't found!"
+msgstr "O arquivo CSV não foi encontrado!"

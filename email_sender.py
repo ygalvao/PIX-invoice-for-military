@@ -6,8 +6,6 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-_ = gettext.gettext
-
 smtp_data = {
     'server' : 'smtp.mailprovider.com',
     'port' : '587',
@@ -16,12 +14,20 @@ smtp_data = {
     'receiver' : 'john@doe.com'
     }
 
-def send_email(iteration, smtp_data):
+def send_email(iteration, smtp_data, lang):
     smtp_server = smtp_data['server']
     port = smtp_data['port']
     sender_email = smtp_data['sender']
     receiver_email = smtp_data['receiver']
     password = smtp_data['password']
+
+    if lang in ('P', 'p', 'Portugues', 'Português', 'português', 'portugues', 'por', 'Por', 'POR', 'pt', 'PT', 'Pt'):
+        pt = gettext.translation('base2', localedir='locales', languages=['pt'])
+        pt.install()
+        _ = pt.gettext # Portuguese translation
+
+    else:
+        _ = gettext.gettext
 
     subject = _("PIX for payment")
     body = _('''Hello!
@@ -68,7 +74,7 @@ This in an automated email.''')
     # Try to log in to server and send email
     try:
         with smtplib.SMTP(smtp_server, port) as server:
-##            server.connect(smtp_server, port)
+            server.connect(smtp_server, port)
             server.ehlo()
             server.starttls(context=context)
             server.ehlo()

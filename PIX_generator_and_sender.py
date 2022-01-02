@@ -5,7 +5,15 @@ from email_sender import send_email
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-_ = gettext.gettext
+LANG = input('Choose your language / escolha a sua língua: [P]ortuguês ou/or [E]nglish? ')
+
+if LANG in ('P', 'p', 'Portugues', 'Português', 'português', 'portugues', 'por', 'Por', 'POR', 'pt', 'PT', 'Pt'):
+    pt = gettext.translation('base', localedir='locales', languages=['pt'])
+    pt.install()
+    _ = pt.gettext # Portuguese translation
+
+else:
+    _ = gettext.gettext
 
 CSV_NAME = input(_('What is the name of the .CSV file to be imported (only the name, without the .csv extension)? '))
 
@@ -54,7 +62,7 @@ def ask_for_prices():
         '1' : round(float(input(_('Enter the price to be charged to the residents of the first village: '))), 2),
         '2' : round(float(input(_('Enter the price to be charged to the residents of the second village: '))), 2),
         '3' : round(float(input(_('Enter the price to be charged to the residents of the third village: '))), 2),
-        'm_date' : input(_('Enter the the maturity date for all the invoices (DDMMAAA): '))
+        'm_date' : input(_('Enter the the maturity date for all the invoices (DDMMYYYY): '))
         }
 
     return prices
@@ -156,7 +164,7 @@ def start():
             if request.ok:
                 work_response(driver, response, i)
                 smtp_data['receiver'] = CSV_DF.loc[i]['Email']
-                send_email(i, smtp_data)
+                send_email(i, smtp_data, LANG)
 
             else:
                 for i in response:
