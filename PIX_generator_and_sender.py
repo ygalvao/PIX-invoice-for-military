@@ -176,7 +176,7 @@ def start():
         driver.quit()
 
     else:
-        print(_('''The CSV file wasn't found!'''))
+        print(_('''The CSV file was not found!'''))
         start()
         
 if __name__ == '__main__':

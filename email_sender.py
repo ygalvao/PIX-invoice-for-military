@@ -92,4 +92,4 @@ This in an automated email.''')
 ##        server.quit()
 
 if __name__ == '__main__':
-    send_email(0, smtp_data)
+    send_email(0, smtp_data, 'pt')
